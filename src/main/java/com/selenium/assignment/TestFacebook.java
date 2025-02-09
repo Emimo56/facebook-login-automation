@@ -21,6 +21,8 @@ public class TestFacebook {
         // Set up Chrome options
         ChromeOptions options = new ChromeOptions();
         options.addArguments("user-data-dir=" + userDataDir);
+        options.addArguments("--incognito");  // Launch Chrome in Incognito mode
+
 
         // Start the WebDriver
         WebDriver driver = new ChromeDriver(options);
