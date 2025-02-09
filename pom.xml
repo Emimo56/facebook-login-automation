@@ -4,69 +4,84 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.selenium</groupId>
-  <artifactId>SeleniumAssignment</artifactId>
-  <version>1.0.0</version>
+  <groupId>com.selenium.assignment</groupId>
+  <artifactId>selenium-facebook-login</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>Selenium Facebook Login Automation</name>
+  <url>http://maven.apache.org</url>
 
   <properties>
-    <surefire.parallel>1</surefire.parallel>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <selenium.version>4.28.1</selenium.version>
+    <selenium.version>4.28.1</selenium.version> <!-- Use the correct version of Selenium -->
+    <maven.compiler.source>17</maven.compiler.source> <!-- Java version -->
+    <maven.compiler.target>17</maven.compiler.target> <!-- Java version -->
   </properties>
 
-  <repositories>
-    <repository>
-      <id>sonatype-nexus-snapshots</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
-
   <dependencies>
+    <!-- Selenium dependencies -->
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-java</artifactId>
       <version>${selenium.version}</version>
     </dependency>
+
+    <!-- WebDriver for Chrome -->
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-grid</artifactId>
+      <artifactId>selenium-chrome-driver</artifactId>
       <version>${selenium.version}</version>
     </dependency>
+
+    <!-- JUnit for testing -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
       <version>5.11.4</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.titusfortner</groupId>
-      <artifactId>selenium-logger</artifactId>
-      <version>2.4.0</version>
-    </dependency>
   </dependencies>
 
   <build>
     <plugins>
+      <!-- Maven Compiler Plugin to compile with Java 17 -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.5.2</version>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
         <configuration>
-          <properties>
-            <configurationParameters>
-              junit.jupiter.execution.parallel.enabled = true
-              junit.jupiter.execution.parallel.mode.default = concurrent
-              junit.jupiter.execution.parallel.config.strategy = fixed
-              junit.jupiter.execution.parallel.config.fixed.parallelism = ${surefire.parallel}
-              junit.jupiter.execution.parallel.config.fixed.max-pool-size = ${surefire.parallel}
-            </configurationParameters>
-          </properties>
-          <rerunFailingTestsCount>3</rerunFailingTestsCount>
+          <source>17</source>
+          <target>17</target>
+        </configuration>
+      </plugin>
+
+      <!-- Maven Shade Plugin for creating an executable JAR -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.1</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Maven Jar Plugin to add Main-Class to the manifest -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Main-Class>com.selenium.assignment.TestFacebook</Main-Class> <!-- Main class with your main method -->
+            </manifestEntries>
+          </archive>
         </configuration>
       </plugin>
     </plugins>
